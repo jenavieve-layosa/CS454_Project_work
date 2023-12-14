@@ -1,9 +1,12 @@
 #cs 454
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
+
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Util import Counter
 import base64
+
+
 
 
 def generate_aes_key():
@@ -48,13 +51,11 @@ def decrypt_ofb(ciphertext, key, iv):
     plaintext = cipher.decrypt(ciphertext)
     return unpad(plaintext, AES.block_size)
 def encrypt_ctr(message, key, nonce):
-    ctr = Counter.new(nbits=64, prefix=nonce)
-    cipher = AES.new(key, AES.MODE_CTR, counter=ctr)
+    cipher = AES.new(key, AES.MODE_CTR, counter=Counter.new(nbits=64, prefix=nonce))
     ciphertext = cipher.encrypt(message)
     return ciphertext
 def decrypt_ctr(ciphertext, key, nonce):
-    ctr = Counter.new(nbits=64, prefix=nonce)
-    cipher = AES.new(key, AES.MODE_CTR, counter=ctr)
+    cipher = AES.new(key, AES.MODE_CTR, counter=Counter.new(nbits=64, prefix=nonce))
     plaintext = cipher.decrypt(ciphertext)
     return unpad(plaintext, AES.block_size)
 
@@ -64,16 +65,16 @@ iv = get_random_bytes(AES.block_size)
 nonce = get_random_bytes(8)
 message = "Hello, this is a sample message for encryption and decryption using AES modes."
 
-encrypted_ecb = encrypt_ecb(prepare_message(message), key, iv)
-decrypted_ecb = decrypt_ecb(encrypted_ecb, key, iv)
-encrypted_cbc = encrypt_cbc(prepare_message(message), key, iv)
-decrypted_cbc = decrypt_cbc(encrypted_cbc, key, iv)
-encrypted_cfb = encrypt_cfb(prepare_message(message), key, iv)
-decrypted_cfb = decrypt_cfb(encrypted_cfb, key, iv)
-encrypted_ofb = encrypt_ofb(prepare_message(message), key, iv)
-decrypted_ofb = decrypt_ofb(encrypted_ofb, key, iv)
-encrypted_ctr = encrypt_ctr(prepare_message(message), key, nonce)
-decrypted_ctr = decrypt_ctr(encrypted_ctr, key, nonce)
+encrypted_ecb=encrypt_ecb(prepare_message(message), key, iv)
+decrypted_ecb=decrypt_ecb(encrypted_ecb, key, iv)
+encrypted_cbc=encrypt_cbc(prepare_message(message), key, iv)
+decrypted_cbc=decrypt_cbc(encrypted_cbc, key, iv)
+encrypted_cfb=encrypt_cfb(prepare_message(message), key, iv)
+decrypted_cfb=decrypt_cfb(encrypted_cfb, key, iv)
+encrypted_ofb=encrypt_ofb(prepare_message(message), key, iv)
+decrypted_ofb=decrypt_ofb(encrypted_ofb, key, iv)
+encrypted_ctr=encrypt_ctr(prepare_message(message), key, nonce)
+decrypted_ctr=decrypt_ctr(encrypted_ctr, key, nonce)
 
 #results
 print("ECB Mode: \n Original:", message)

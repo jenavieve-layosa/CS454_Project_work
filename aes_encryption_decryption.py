@@ -24,9 +24,12 @@ def error_propagation_analysis(mode_name, encrypt_function, decrypt_function, ke
     print(f"\n{mode_name} Mode with Error Propagation Analysis: ")
 
     try:
+
         encrypted_message = encrypt_function(prepare_message(message), key, generate_iv(iv_length))
 
         introduce_errors(encrypted_message, error_rate)
+
+        #count error bits??
 
         try:
             decrypted_message = decrypt_function(encrypted_message, key, generate_iv(iv_length))
@@ -40,6 +43,7 @@ def error_propagation_analysis(mode_name, encrypt_function, decrypt_function, ke
             print(f"Decryption Error: {decrypt}")
             print()
     
+
     except Exception as encrypt:
         print(f"Encryption Error: {encrypt}")
         print()
@@ -49,7 +53,6 @@ key = generate_aes_key()
 nonce = get_random_bytes(8)
 message = "Hello, this is a sample message for encryption and decryption using AES modes."
 error_rate = 0.05 
-
 error_propagation_analysis("ECB", encrypt_ecb, decrypt_ecb, key, 0, nonce, message, error_rate)
 error_propagation_analysis("CBC", encrypt_cbc, decrypt_cbc, key, AES.block_size, nonce, message, error_rate)
 error_propagation_analysis("CFB", encrypt_cfb, decrypt_cfb, key, AES.block_size, nonce, message, error_rate)
